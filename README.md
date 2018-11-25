@@ -41,7 +41,7 @@ The output will be first a description of the environment then followed by a run
 
 The project uses code provided with the Udacity deep q learning lessons.  The original two layer linear network with 64 nodes per layer and a new dueling network were used for deep q learning.  The original deep queue learning agent was modified to provide double q learning.  The algorithm for deep q learning works as follows:
 
-1. (1)The Jupyter Notebook is launched and the learning routine is engaged by executing the code block.  The first action is to create a unity environment object – env that is a banana game (Banana.exe).  The brain name or single name of this environment is identified and used to create a single brain object that provides current state information, rewards and next states when actions are provided to it.
+(1)The Jupyter Notebook is launched and the learning routine is engaged by executing the code block.  The first action is to create a unity environment object – env that is a banana game (Banana.exe).  The brain name or single name of this environment is identified and used to create a single brain object that provides current state information, rewards and next states when actions are provided to it.
 
 **env = UnityEnvironment(file\_name=&quot; Banana.exe&quot;, no\_graphics=True)**
 
@@ -51,7 +51,7 @@ The project uses code provided with the Udacity deep q learning lessons.  The or
 
 **brain = env.brains[brain\_name]**
 
-1. (2)The environment is reset to start from scratch.  The starting state and the range of actions are stored to begin the training process.
+(2)The environment is reset to start from scratch.  The starting state and the range of actions are stored to begin the training process.
 
 **env\_info = env.reset(train\_mode=True)[brain\_name]**
 
@@ -61,51 +61,49 @@ The project uses code provided with the Udacity deep q learning lessons.  The or
 
 **action\_size = brain.vector\_action\_space\_size**
 
-1. (3)An agent object is created.  The agent is defined in the module dqn\_agent.py.  The agent is provided the state space size and the action space size as well as a seed used for testing.  The agent object in the course of learning receives the current state information, determines and actions from the state, provides the action to the environment which provides the agent with a next state and reward, and learns from the next state and reward information to take better actions.
+(3)An agent object is created.  The agent is defined in the module dqn\_agent.py.  The agent is provided the state space size and the action space size as well as a seed used for testing.  The agent object in the course of learning receives the current state information, determines and actions from the state, provides the action to the environment which provides the agent with a next state and reward, and learns from the next state and reward information to take better actions.
 
 **agent = Agent(state\_size=state\_size, action\_size=action\_size, seed=0)**
 
-1. (4)The deep queue learning routine is called to cycle through episodes, timesteps and state/action/reward sequences to learn the game and optimize state/action/reward choices.
+(4)The deep queue learning routine is called to cycle through episodes, timesteps and state/action/reward sequences to learn the game and optimize state/action/reward choices.
 
 **scores = dqn(agent, env, brain, brain\_name)**
 
-1. (5)The deep queue learning routine loops through 2000 episodes that have a maximum 1000 timesteps.  The game will cycle through chosen state/action selections until the environment signals that it is complete with a done flag or until a maximum of 1000 timesteps is reached.
+(5)The deep queue learning routine loops through 2000 episodes that have a maximum 1000 timesteps.  The game will cycle through chosen state/action selections until the environment signals that it is complete with a done flag or until a maximum of 1000 timesteps is reached.
 
 At the beginning of each episode, the environment is reset. The beginning state is read.  The score for that episode is set to zero.  The training code then loops through a maximum of 1000 timesteps or until the environment signals completion.  Each timestep the agent selects an action.  The environment returns a reward and next state.  The agent then steps to the next state.  (This is where learning occurs in the agent).  The score is updated with the reward.  If the episode is not complete the cycle happens again to the next state and agent step.  Once the episode is complete, the routine stores the score for the episode, which is the accumulated reward.  The episode is incremented, and the process repeats for 2000 episodes.
 
-**    for i\_episode in range(1, n\_episodes+1):**
+   **for i\_episode in range(1, n\_episodes+1):**
 
-**        env\_info = env.reset(train\_mode=True)[brain\_name] # reset the environment**
+   ****env\_info = env.reset(train\_mode=True)[brain\_name] # reset the environment**
 
-**        state = env\_info.vector\_observations[0]            # get the current state**
+   ****state = env\_info.vector\_observations[0]            # get the current state**
 
-**        score = 0**
+   ****score = 0**
 
-**        for t in range(max\_t):**
+   ****for t in range(max\_t):**
 
-**            action = int(agent.act(state, eps))            # select an action    **
+   ****action = int(agent.act(state, eps))            # select an action    **
 
-**            env\_info = env.step(action)[brain\_name]        # send the action to the environment**
+   ****env\_info = env.step(action)[brain\_name]        # send the action to the environment**
 
-**            next\_state = env\_info.vector\_observations[0]   # get the next state**
+   ****next\_state = env\_info.vector\_observations[0]   # get the next state**
 
-**            reward = env\_info.rewards[0]                   # get the reward**
+   ****reward = env\_info.rewards[0]                   # get the reward**
 
-**            done = env\_info.local\_done[0]                  # see if episode has finished**
+   ****done = env\_info.local\_done[0]                  # see if episode has finished**
 
-**            agent.step(state, action, reward, next\_state, done)**
+   ****agent.step(state, action, reward, next\_state, done)**
 
-**            state = next\_state**
+   ****state = next\_state**
 
-**            score += reward**
+   ****score += reward**
 
-**            if done:**
+   ****if done:**
 
-**                break**
+   ****break**
 
-**               **
-
-**        scores\_window.append(score)       # save most recent score**
+   ****scores\_window.append(score)       # save most recent score**
 
 1. (6)The routine provides a running tally of the average score per episode.  After a score of 13 is reached, a message is printed to identify how many steps were necessary to achieve that goal.  The standard two layer model and dqn\_agent without double learning achieved that result it the fewest steps of only 372.  Interestingly, the simple model and the agent without double learning seemed to perform better than the dueling model with a double q learning agent.
 2. (7)The agent learns by storing the experiences the agent receives through the course of time in memory.  Two networks (either a two-layer linear or a dueling network) are used for the learning.  One, the local network provides the optimal action for a given state.  The other network, the target network is used to compare the result of the current step Q value with the expected value based on the next state value as determined by the target network:
